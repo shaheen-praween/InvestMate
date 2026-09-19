@@ -61,4 +61,9 @@ userSchema.pre('save', async function () {
   this.password = await bcrypt.hash(this.password, 10);
 });
 
+// Login ke time: user ka typed password hashed password se match karta hai ya nahi
+userSchema.methods.comparePassword = async function (enteredPassword) {
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
 module.exports = mongoose.model('User', userSchema);
