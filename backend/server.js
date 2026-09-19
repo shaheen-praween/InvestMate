@@ -6,6 +6,7 @@ require('dotenv').config();
 // 2. Packages import karo
 const express = require('express');
 const cors = require('cors');
+const connectDB = require('./config/db');
 
 // 3. Express app banao
 const app = express();
@@ -30,9 +31,11 @@ app.use((req, res) => {
   });
 });
 
-// 7. Server start karo
+// 7. Pehle database connect karo, phir server start karo
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+connectDB().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
 });
