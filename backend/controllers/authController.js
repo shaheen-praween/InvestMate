@@ -155,4 +155,25 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+// @desc    Logged-in user ki profile
+// @route   GET /api/auth/me
+// @access  Private (valid token chahiye)
+const getMe = async (req, res) => {
+  // req.user protect middleware ne set kiya hai, token wale user ka data
+  const user = req.user;
+
+  res.status(200).json({
+    success: true,
+    user: {
+      id: user._id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
+      walletBalance: user.walletBalance,
+      isActive: user.isActive,
+      createdAt: user.createdAt,
+    },
+  });
+};
+
+module.exports = { registerUser, loginUser, getMe };
