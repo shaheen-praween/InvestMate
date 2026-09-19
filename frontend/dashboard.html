@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InvestMate - Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Top navbar -->
+  <nav class="navbar">
+    <span class="logo">InvestMate</span>
+    <div class="nav-right">
+      <span id="navUserName"></span>
+      <button id="logoutBtn" class="btn btn-outline">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- Error message yahan dikhega -->
+    <div id="alertBox" class="alert"></div>
+
+    <div class="card">
+      <h2>Welcome, <span id="welcomeName"></span> 👋</h2>
+      <p class="muted">This is a placeholder dashboard. Portfolio value, P/L, charts and recent orders will be added in later phases.</p>
+    </div>
+
+    <div class="card">
+      <h2>Your account</h2>
+      <p><strong>Name:</strong> <span id="userName">-</span></p>
+      <p><strong>Email:</strong> <span id="userEmail">-</span></p>
+      <p><strong>Role:</strong> <span id="userRole">-</span></p>
+      <p><strong>Available Cash:</strong> <span id="userWallet">-</span></p>
+      <p><strong>Member since:</strong> <span id="userSince">-</span></p>
+    </div>
+  </div>
+
+  <!-- Pehle api.js (helpers), phir is page ki apni JS -->
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

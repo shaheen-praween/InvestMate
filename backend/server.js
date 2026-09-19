@@ -4,6 +4,7 @@
 require('dotenv').config();
 
 // 2. Packages import karo
+const path = require('path');
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
@@ -27,7 +28,16 @@ app.get('/api/health', (req, res) => {
 // 6. API routes
 app.use('/api/auth', authRoutes);
 
-// 7. Agar koi route match na ho to 404 jawab do
+// 7. Frontend files serve karo (frontend folder backend ke bahar hai, isliye ../frontend)
+//    extensions: ['html'] ka matlab: /login kholne par login.html khulega
+app.use(express.static(path.join(__dirname, '../frontend'), { extensions: ['html'] }));
+
+// 8. Home page kholne par login page par bhej do
+app.get('/', (req, res) => {
+  res.redirect('/login');
+});
+
+// 9. Agar koi route match na ho to 404 jawab do
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -35,7 +45,7 @@ app.use((req, res) => {
   });
 });
 
-// 8. Pehle database connect karo, phir server start karo
+// 10. Pehle database connect karo, phir server start karo
 const PORT = process.env.PORT || 5000;
 
 connectDB().then(() => {
