@@ -110,3 +110,12 @@ function hideAlert(element) {
   element.className = 'alert';
   element.textContent = '';
 }
+
+/* ---------- Price ko ₹3,500.00 jaise format mein dikhao ---------- */
+
+function formatPrice(amount) {
+  return '₹' + Number(amount).toLocaleString('en-IN', {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  });
+}

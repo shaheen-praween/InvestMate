@@ -9,6 +9,7 @@ const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
+const stockRoutes = require('./routes/stockRoutes');
 
 // 3. Express app banao
 const app = express();
@@ -27,17 +28,24 @@ app.get('/api/health', (req, res) => {
 
 // 6. API routes
 app.use('/api/auth', authRoutes);
+app.use('/api/stocks', stockRoutes);
 
 // 7. Frontend files serve karo (frontend folder backend ke bahar hai, isliye ../frontend)
 //    extensions: ['html'] ka matlab: /login kholne par login.html khulega
 app.use(express.static(path.join(__dirname, '../frontend'), { extensions: ['html'] }));
 
-// 8. Home page kholne par login page par bhej do
+// 8. Stock detail page: /stock/<id> par hamesha stock.html dikhao
+//    (id ko page ki JS URL se padhti hai)
+app.get('/stock/:id', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/stock.html'));
+});
+
+// 9. Home page kholne par login page par bhej do
 app.get('/', (req, res) => {
   res.redirect('/login');
 });
 
-// 9. Agar koi route match na ho to 404 jawab do
+// 10. Agar koi route match na ho to 404 jawab do
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -45,7 +53,7 @@ app.use((req, res) => {
   });
 });
 
-// 10. Pehle database connect karo, phir server start karo
+// 11. Pehle database connect karo, phir server start karo
 const PORT = process.env.PORT || 5000;
 
 connectDB().then(() => {

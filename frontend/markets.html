@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InvestMate - Markets</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Top navbar -->
+  <nav class="navbar">
+    <span class="logo">InvestMate</span>
+    <div class="nav-links">
+      <a href="/dashboard">Dashboard</a>
+      <a href="/markets" class="active">Markets</a>
+    </div>
+    <div class="nav-right">
+      <span id="navUserName"></span>
+      <button id="logoutBtn" class="btn btn-outline">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- Error message yahan dikhega -->
+    <div id="alertBox" class="alert"></div>
+
+    <div class="card">
+      <h2>Markets</h2>
+
+      <div class="toolbar">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search by symbol or company name" maxlength="50" autocomplete="off">
+        <span id="countText" class="muted"></span>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Company</th>
+              <th>Sector</th>
+              <th class="num">Price</th>
+              <th class="num">Change</th>
+              <th class="num">Change %</th>
+            </tr>
+          </thead>
+          <tbody id="stockBody"></tbody>
+        </table>
+      </div>
+
+      <p id="emptyState" class="empty-state" hidden>No stocks found</p>
+    </div>
+  </div>
+
+  <!-- Pehle api.js (helpers), phir is page ki apni JS -->
+  <script src="/js/api.js"></script>
+  <script src="/js/markets.js"></script>
+</body>
+</html>

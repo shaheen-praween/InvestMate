@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InvestMate - Stock</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Top navbar -->
+  <nav class="navbar">
+    <span class="logo">InvestMate</span>
+    <div class="nav-links">
+      <a href="/dashboard">Dashboard</a>
+      <a href="/markets" class="active">Markets</a>
+    </div>
+    <div class="nav-right">
+      <span id="navUserName"></span>
+      <button id="logoutBtn" class="btn btn-outline">Logout</button>
+    </div>
+  </nav>
+
+  <div class="container">
+    <a href="/markets" class="back-link">&larr; Back to Markets</a>
+
+    <!-- Error message yahan dikhega -->
+    <div id="alertBox" class="alert"></div>
+
+    <!-- Stock ka data aane par hi ye dikhega -->
+    <div id="stockContent" hidden>
+      <div class="card">
+        <div class="stock-header">
+          <div class="stock-title">
+            <h1 id="stockSymbol"></h1>
+            <p id="stockCompany" class="muted"></p>
+            <span id="stockSector" class="sector-badge"></span>
+          </div>
+          <div class="stock-price">
+            <div id="stockPrice" class="price-big"></div>
+            <div id="stockChange"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Price chart (last 30 days)</h2>
+        <div class="chart-box">
+          <canvas id="priceChart"></canvas>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>About</h2>
+        <div class="detail-grid">
+          <div>
+            <div class="detail-label">Previous close</div>
+            <div id="stockPrevClose" class="detail-value"></div>
+          </div>
+          <div>
+            <div class="detail-label">Sector</div>
+            <div id="stockSectorText" class="detail-value"></div>
+          </div>
+        </div>
+        <p id="stockDescription" class="muted"></p>
+      </div>
+
+      <div class="card">
+        <h2>Trade</h2>
+        <div class="trade-buttons">
+          <button class="btn btn-buy" disabled title="Trading will be enabled in Phase 10">Buy</button>
+          <button class="btn btn-sell" disabled title="Trading will be enabled in Phase 10">Sell</button>
+        </div>
+        <p class="muted" style="margin-top: 12px;">Buy and Sell will work once the virtual trading engine is built (Phase 10).</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chart.js library (pinned version), phir api.js, phir is page ki JS -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="/js/api.js"></script>
+  <script src="/js/stock.js"></script>
+</body>
+</html>

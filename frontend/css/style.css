@@ -208,3 +208,202 @@ body {
 .muted {
   color: var(--text-muted);
 }
+
+/* ---------- Navbar ke beech ke links ---------- */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.nav-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+  color: var(--primary);
+}
+
+/* ---------- Search box aur toolbar ---------- */
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.search-input {
+  width: 100%;
+  max-width: 360px;
+  padding: 10px 12px;
+  font-size: 15px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* ---------- Data table ---------- */
+.table-wrap {
+  overflow-x: auto; /* chhoti screen par table side mein scroll ho */
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.data-table th {
+  text-align: left;
+  padding: 10px 12px;
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table th.num,
+.data-table td.num {
+  text-align: right;
+}
+
+.data-table tbody tr.clickable {
+  cursor: pointer;
+}
+
+.data-table tbody tr.clickable:hover {
+  background: #f8fafc;
+}
+
+.symbol {
+  font-weight: 700;
+}
+
+.up {
+  color: var(--success);
+  font-weight: 600;
+}
+
+.down {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+.sector-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 12px;
+  background: #e0e7ff;
+  color: #3730a3;
+  border-radius: 999px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 32px 0;
+  color: var(--text-muted);
+}
+
+/* ---------- Stock detail page ---------- */
+.back-link {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: var(--primary);
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.stock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.stock-title h1 {
+  font-size: 28px;
+}
+
+.stock-title .muted {
+  margin: 2px 0 8px;
+}
+
+.stock-price {
+  text-align: right;
+}
+
+.price-big {
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.chart-box {
+  position: relative;
+  height: 320px;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.detail-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.detail-value {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.trade-buttons {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.trade-buttons .btn {
+  flex: 1;
+}
+
+.btn-buy {
+  background: var(--success);
+}
+
+.btn-buy:hover {
+  background: #15803d;
+}
+
+.btn-sell {
+  background: var(--danger);
+}
+
+.btn-sell:hover {
+  background: #b91c1c;
+}
