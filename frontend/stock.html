@@ -66,11 +66,22 @@
 
       <div class="card">
         <h2>Trade</h2>
-        <div class="trade-buttons">
-          <button class="btn btn-buy" disabled title="Trading will be enabled in Phase 10">Buy</button>
-          <button class="btn btn-sell" disabled title="Trading will be enabled in Phase 10">Sell</button>
+        <p class="muted">Available cash: <strong id="walletText">-</strong></p>
+
+        <!-- Trade ka success / error message yahan dikhega -->
+        <div id="tradeAlert" class="alert" style="margin-top: 12px;"></div>
+
+        <div class="form-group trade-qty">
+          <label for="quantity">Quantity (shares)</label>
+          <input type="number" id="quantity" value="1" min="1" max="100000" step="1">
         </div>
-        <p class="muted" style="margin-top: 12px;">Buy and Sell will work once the virtual trading engine is built (Phase 10).</p>
+
+        <p class="estimate">Estimated amount: <strong id="estimatedTotal">-</strong></p>
+
+        <div class="trade-buttons">
+          <button id="buyBtn" class="btn btn-buy">Buy</button>
+          <button id="sellBtn" class="btn btn-sell">Sell</button>
+        </div>
       </div>
     </div>
   </div>

@@ -407,3 +407,13 @@ body {
 .btn-sell:hover {
   background: #b91c1c;
 }
+
+/* ---------- Trade box (quantity input) ---------- */
+.trade-qty {
+  max-width: 220px;
+  margin-top: 12px;
+}
+
+.estimate {
+  margin: 4px 0 12px;
+}

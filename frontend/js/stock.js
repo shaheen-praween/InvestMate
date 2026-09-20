@@ -1,7 +1,13 @@
 // frontend/js/stock.js
 
 const alertBox = document.getElementById('alertBox');
+const tradeAlert = document.getElementById('tradeAlert');
 const stockContent = document.getElementById('stockContent');
+const buyBtn = document.getElementById('buyBtn');
+const sellBtn = document.getElementById('sellBtn');
+const quantityInput = document.getElementById('quantity');
+
+let currentStock = null; // is page ka stock (id, symbol, price)
 
 // URL /stock/<id> se id nikalo
 function getStockIdFromUrl() {
@@ -13,6 +19,8 @@ function getStockIdFromUrl() {
 function setText(id, text) {
   document.getElementById(id).textContent = text;
 }
+
+/* ---------- Chart ---------- */
 
 function drawChart(priceHistory) {
   // Chart.js CDN se load hoti hai. Internet na ho to yahan message dikhayenge
@@ -71,6 +79,87 @@ function drawChart(priceHistory) {
   });
 }
 
+/* ---------- Trade (Buy / Sell) ---------- */
+
+// Quantity ko sahi number mein badlo. Galat ho to null
+function parseQuantity() {
+  const raw = quantityInput.value.trim();
+  const qty = Number(raw);
+
+  if (raw === '' || !Number.isInteger(qty) || qty < 1 || qty > 100000) {
+    return null;
+  }
+  return qty;
+}
+
+// "Estimated amount" = quantity x price (sirf dikhane ke liye, asli amount server nikalta hai)
+function updateEstimate() {
+  const qty = parseQuantity();
+  const text = qty && currentStock ? formatPrice(qty * currentStock.currentPrice) : '-';
+  setText('estimatedTotal', text);
+}
+
+function setTradeButtons(disabled) {
+  buyBtn.disabled = disabled;
+  sellBtn.disabled = disabled;
+}
+
+async function placeOrder(type) {
+  hideAlert(tradeAlert);
+
+  const qty = parseQuantity();
+  if (!qty) {
+    return showAlert(tradeAlert, 'Enter a whole number of shares between 1 and 100000');
+  }
+
+  // Confirm popup: galti se click na ho jaye
+  const verb = type === 'BUY' ? 'Buy' : 'Sell';
+  const price = formatPrice(currentStock.currentPrice);
+  const total = formatPrice(qty * currentStock.currentPrice);
+  const ok = window.confirm(
+    `${verb} ${qty} share${qty === 1 ? '' : 's'} of ${currentStock.symbol} at ${price}?\nEstimated total: ${total}`
+  );
+  if (!ok) return;
+
+  // Request chalte waqt dono buttons band (double click se bachne ke liye)
+  setTradeButtons(true);
+
+  try {
+    // Sirf stockId aur quantity bhejte hain. PRICE KABHI NAHI, wo server apni database se leta hai
+    const data = await apiRequest(`/orders/${type.toLowerCase()}`, {
+      method: 'POST',
+      body: { stockId: currentStock._id, quantity: qty },
+    });
+
+    // Message banao: server ka message + holding ki halat (+ SELL par profit/loss)
+    let message = data.message;
+
+    if (type === 'SELL') {
+      const pnl = data.order.realizedPnL;
+      const pnlText = (pnl >= 0 ? '+' : '-') + formatPrice(Math.abs(pnl));
+      message += `. Profit/Loss on this sale: ${pnlText}`;
+    }
+
+    if (data.holding.quantity > 0) {
+      message += `. You now own ${data.holding.quantity} share${data.holding.quantity === 1 ? '' : 's'} (avg ${formatPrice(data.holding.avgBuyPrice)})`;
+    } else {
+      message += `. You no longer own any shares of ${currentStock.symbol}`;
+    }
+
+    showAlert(tradeAlert, message, 'success');
+
+    // Wallet naya dikhao (server ne jo balance bheja wahi)
+    setText('walletText', formatPrice(data.walletBalance));
+  } catch (error) {
+    // Jaise "Insufficient balance..." ya "You only own 3 shares...". 401 par apiRequest khud logout kar deta hai
+    showAlert(tradeAlert, error.message);
+  } finally {
+    setTradeButtons(false);
+  }
+}
+
+/* ---------- Page start ---------- */
+
 async function init() {
   // Login nahi hai to /login par bhej do
   if (!requireAuth()) return;
@@ -93,6 +182,7 @@ async function init() {
   try {
     const data = await apiRequest(`/stocks/${id}`);
     const stock = data.stock;
+    currentStock = stock;
 
     document.title = `InvestMate - ${stock.symbol}`;
 
@@ -111,11 +201,21 @@ async function init() {
     changeEl.textContent = `${sign}${stock.change.toFixed(2)} (${sign}${stock.changePercent.toFixed(2)}%)`;
     changeEl.className = direction;
 
+    // Available cash backend se lo (localStorage ka purana balance bharosemand nahi)
+    const me = await apiRequest('/auth/me');
+    setText('walletText', formatPrice(me.user.walletBalance));
+
     stockContent.hidden = false;
 
     if (stock.priceHistory && stock.priceHistory.length > 0) {
       drawChart(stock.priceHistory);
     }
+
+    // Trade ke events
+    quantityInput.addEventListener('input', updateEstimate);
+    buyBtn.addEventListener('click', () => placeOrder('BUY'));
+    sellBtn.addEventListener('click', () => placeOrder('SELL'));
+    updateEstimate();
   } catch (error) {
     // Jaise "Stock not found". 401 par apiRequest khud logout karke /login bhej deta hai
     showAlert(alertBox, error.message);

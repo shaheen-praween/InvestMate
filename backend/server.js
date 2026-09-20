@@ -10,6 +10,7 @@ const cors = require('cors');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/authRoutes');
 const stockRoutes = require('./routes/stockRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 
 // 3. Express app banao
 const app = express();
@@ -29,6 +30,7 @@ app.get('/api/health', (req, res) => {
 // 6. API routes
 app.use('/api/auth', authRoutes);
 app.use('/api/stocks', stockRoutes);
+app.use('/api/orders', orderRoutes);
 
 // 7. Frontend files serve karo (frontend folder backend ke bahar hai, isliye ../frontend)
 //    extensions: ['html'] ka matlab: /login kholne par login.html khulega
