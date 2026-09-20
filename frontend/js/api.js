@@ -119,3 +119,24 @@ function formatPrice(amount) {
     maximumFractionDigits: 2,
   });
 }
+
+/* ---------- Profit / Loss dikhane ke helpers ---------- */
+
+// +₹1,820.00 ya -₹500.00 (0 ho to bina sign ke)
+function formatSignedPrice(amount) {
+  const n = Number(amount);
+  const sign = n > 0 ? '+' : n < 0 ? '-' : '';
+  return sign + formatPrice(Math.abs(n));
+}
+
+// +3.64% ya -1.20%
+function formatSignedPercent(value) {
+  const n = Number(value);
+  const sign = n > 0 ? '+' : n < 0 ? '-' : '';
+  return `${sign}${Math.abs(n).toFixed(2)}%`;
+}
+
+// Profit par 'up' (hara), loss par 'down' (lal), 0 par kuch nahi
+function pnlClass(value) {
+  return value > 0 ? 'up' : value < 0 ? 'down' : '';
+}

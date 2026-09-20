@@ -417,3 +417,47 @@ body {
 .estimate {
   margin: 4px 0 12px;
 }
+
+/* ---------- Summary cards (portfolio / dashboard) ---------- */
+.summary-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.summary-card {
+  background: var(--card-bg);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+}
+
+.summary-label {
+  font-size: 12px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.summary-value {
+  font-size: 24px;
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.summary-sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+/* ---------- Dashboard ---------- */
+.page-title {
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+
+.view-all {
+  margin-top: 12px;
+  text-align: right;
+}

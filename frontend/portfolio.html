@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InvestMate - Dashboard</title>
+  <title>InvestMate - Portfolio</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -11,9 +11,9 @@
   <nav class="navbar">
     <span class="logo">InvestMate</span>
     <div class="nav-links">
-      <a href="/dashboard" class="active">Dashboard</a>
+      <a href="/dashboard">Dashboard</a>
       <a href="/markets">Markets</a>
-      <a href="/portfolio">Portfolio</a>
+      <a href="/portfolio" class="active">Portfolio</a>
     </div>
     <div class="nav-right">
       <span id="navUserName"></span>
@@ -24,8 +24,6 @@
   <div class="container">
     <!-- Error message yahan dikhega -->
     <div id="alertBox" class="alert"></div>
-
-    <h2 class="page-title">Welcome, <span id="welcomeName"></span> 👋</h2>
 
     <!-- Summary cards -->
     <div class="summary-grid">
@@ -42,27 +40,33 @@
       </div>
 
       <div class="summary-card">
+        <div class="summary-label">Current Value</div>
+        <div id="holdingsValue" class="summary-value">-</div>
+        <div class="summary-sub">Holdings at current prices</div>
+      </div>
+
+      <div class="summary-card">
         <div class="summary-label">Available Cash</div>
         <div id="availableCash" class="summary-value">-</div>
         <div class="summary-sub">Ready to trade</div>
       </div>
 
       <div class="summary-card">
-        <div class="summary-label">Total Profit / Loss</div>
+        <div class="summary-label">Overall P/L</div>
         <div id="totalPnl" class="summary-value">-</div>
         <div id="pnlBreakdown" class="summary-sub"></div>
       </div>
 
       <div class="summary-card">
-        <div class="summary-label">Return</div>
+        <div class="summary-label">Overall Return</div>
         <div id="totalReturn" class="summary-value">-</div>
         <div class="summary-sub">On total amount bought</div>
       </div>
     </div>
 
-    <!-- Top holdings ka chhota summary -->
+    <!-- Holdings table -->
     <div class="card">
-      <h2>Top holdings</h2>
+      <h2>Your holdings</h2>
 
       <div class="table-wrap">
         <table class="data-table">
@@ -70,8 +74,11 @@
             <tr>
               <th>Stock</th>
               <th class="num">Qty</th>
+              <th class="num">Avg Buy Price</th>
+              <th class="num">Current Price</th>
               <th class="num">Current Value</th>
               <th class="num">P/L</th>
+              <th class="num">Return %</th>
             </tr>
           </thead>
           <tbody id="holdingsBody"></tbody>
@@ -82,19 +89,11 @@
         <p>You do not own any stocks yet.</p>
         <p><a href="/markets" class="back-link">Go to Markets and buy your first stock</a></p>
       </div>
-
-      <p id="viewAll" class="view-all" hidden><a href="/portfolio" class="back-link">View full portfolio &rarr;</a></p>
-    </div>
-
-    <!-- Ye teen cheezein baad ke phases mein aayengi -->
-    <div class="card">
-      <h2>Coming soon</h2>
-      <p class="muted">Portfolio growth chart, recent orders and watchlist summary will appear here in the next phases.</p>
     </div>
   </div>
 
   <!-- Pehle api.js (helpers), phir is page ki apni JS -->
   <script src="/js/api.js"></script>
-  <script src="/js/dashboard.js"></script>
+  <script src="/js/portfolio.js"></script>
 </body>
 </html>
