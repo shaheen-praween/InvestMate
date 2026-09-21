@@ -2,11 +2,15 @@
 
 const alertBox = document.getElementById('alertBox');
 const holdingsBody = document.getElementById('holdingsBody');
-const emptyState = document.getElementById('emptyState');
-const viewAll = document.getElementById('viewAll');
+const emptyHoldings = document.getElementById('emptyHoldings');
+const viewAllHoldings = document.getElementById('viewAllHoldings');
+const ordersBody = document.getElementById('ordersBody');
+const emptyOrders = document.getElementById('emptyOrders');
+const viewAllOrders = document.getElementById('viewAllOrders');
 
-// Dashboard par kitni holdings dikhani hain (baaki Portfolio page par)
+// Dashboard par kitni holdings aur orders dikhane hain (baaki alag pages par)
 const TOP_HOLDINGS = 5;
+const RECENT_ORDERS = 5;
 
 // Har jagah textContent (innerHTML nahi), taaki server ka data HTML ki tarah na chale
 function setText(id, text, className) {
@@ -25,6 +29,8 @@ function createCell(text, className) {
   return td;
 }
 
+/* ---------- Portfolio (summary cards + top holdings) ---------- */
+
 function renderSummary(summary) {
   setText('portfolioValue', formatPrice(summary.portfolioValue));
   setText('investedAmount', formatPrice(summary.investedAmount));
@@ -40,8 +46,8 @@ function renderSummary(summary) {
 
 function renderHoldings(holdings) {
   holdingsBody.innerHTML = ''; // purani rows hatao
-  emptyState.hidden = holdings.length > 0;
-  viewAll.hidden = holdings.length === 0;
+  emptyHoldings.hidden = holdings.length > 0;
+  viewAllHoldings.hidden = holdings.length === 0;
 
   // Portfolio API sabse badi holding pehle deti hai, to pehli kuch hi lo
   holdings.slice(0, TOP_HOLDINGS).forEach((h) => {
@@ -73,7 +79,65 @@ function renderHoldings(holdings) {
   });
 }
 
-async function init() {
+async function loadPortfolio() {
+  try {
+    // Portfolio ke saare numbers backend ke database calculation se aate hain, hardcoded nahi
+    const data = await apiRequest('/portfolio');
+    renderSummary(data.summary);
+    renderHoldings(data.holdings);
+  } catch (error) {
+    // 401 par apiRequest khud logout karke /login bhej deta hai, baaki errors yahan dikhte hain
+    showAlert(alertBox, error.message);
+  }
+}
+
+/* ---------- Recent orders ---------- */
+
+function renderOrders(orders) {
+  ordersBody.innerHTML = ''; // purani rows hatao
+  emptyOrders.hidden = orders.length > 0;
+  viewAllOrders.hidden = orders.length === 0;
+
+  orders.forEach((o) => {
+    const tr = document.createElement('tr');
+    tr.className = 'clickable';
+
+    // Row par click karne se us stock ka page khulega
+    tr.addEventListener('click', () => {
+      window.location.href = `/stock/${o.stockId}`;
+    });
+
+    tr.appendChild(createCell(formatDateTime(o.createdAt)));
+    tr.appendChild(createCell(o.symbol, 'symbol'));
+
+    // BUY hara badge, SELL lal badge
+    const typeCell = document.createElement('td');
+    const badge = document.createElement('span');
+    badge.className = `type-badge ${o.orderType === 'BUY' ? 'type-buy' : 'type-sell'}`;
+    badge.textContent = o.orderType;
+    typeCell.appendChild(badge);
+    tr.appendChild(typeCell);
+
+    tr.appendChild(createCell(String(o.quantity), 'num'));
+    tr.appendChild(createCell(formatPrice(o.totalAmount), 'num'));
+
+    ordersBody.appendChild(tr);
+  });
+}
+
+async function loadRecentOrders() {
+  try {
+    // Sirf sabse naye 5 orders (API naye pehle deti hai)
+    const data = await apiRequest(`/orders?limit=${RECENT_ORDERS}`);
+    renderOrders(data.orders);
+  } catch (error) {
+    showAlert(alertBox, error.message);
+  }
+}
+
+/* ---------- Page start ---------- */
+
+function init() {
   // Login nahi hai to /login par bhej do (api.js ka function)
   if (!requireAuth()) return;
 
@@ -87,15 +151,9 @@ async function init() {
     document.getElementById('welcomeName').textContent = savedUser.name;
   }
 
-  try {
-    // Portfolio ke saare numbers backend ke database calculation se aate hain, hardcoded nahi
-    const data = await apiRequest('/portfolio');
-    renderSummary(data.summary);
-    renderHoldings(data.holdings);
-  } catch (error) {
-    // 401 par apiRequest khud logout karke /login bhej deta hai, baaki errors yahan dikhte hain
-    showAlert(alertBox, error.message);
-  }
+  // Dono kaam alag alag chalte hain: ek fail ho to doosra phir bhi dikhe
+  loadPortfolio();
+  loadRecentOrders();
 }
 
 init();

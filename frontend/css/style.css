@@ -461,3 +461,64 @@ body {
   margin-top: 12px;
   text-align: right;
 }
+
+/* ---------- Tabs (All / Buy / Sell) ---------- */
+.tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tab {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.tab:hover {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.tab.active {
+  color: #fff;
+  background: var(--primary);
+  border-color: var(--primary);
+}
+
+/* ---------- BUY / SELL ka chhota badge ---------- */
+.type-badge {
+  display: inline-block;
+  padding: 2px 10px;
+  font-size: 12px;
+  font-weight: 700;
+  border-radius: 999px;
+}
+
+.type-buy {
+  background: #dcfce7;
+  color: var(--success);
+}
+
+.type-sell {
+  background: #fee2e2;
+  color: var(--danger);
+}
+
+/* ---------- Pagination (Previous / Next) ---------- */
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+}
+
+.pagination .btn {
+  width: auto;
+  padding: 8px 16px;
+}

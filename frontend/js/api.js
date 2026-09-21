@@ -140,3 +140,16 @@ function formatSignedPercent(value) {
 function pnlClass(value) {
   return value > 0 ? 'up' : value < 0 ? 'down' : '';
 }
+
+/* ---------- Date aur time dikhane ka helper ---------- */
+
+// 20 Sep 2026, 01:47 PM
+function formatDateTime(value) {
+  return new Date(value).toLocaleString('en-IN', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+}
