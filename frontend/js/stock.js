@@ -6,6 +6,8 @@ const stockContent = document.getElementById('stockContent');
 const buyBtn = document.getElementById('buyBtn');
 const sellBtn = document.getElementById('sellBtn');
 const quantityInput = document.getElementById('quantity');
+const starBtn = document.getElementById('starBtn');
+let isInWatchlist = false;
 
 let currentStock = null; // is page ka stock (id, symbol, price)
 
@@ -158,6 +160,32 @@ async function placeOrder(type) {
   }
 }
 
+/* ---------- Watchlist star button ---------- */
+
+function updateStarButton() {
+  starBtn.textContent = isInWatchlist ? '★' : '☆';
+  starBtn.className = isInWatchlist ? 'star-btn active' : 'star-btn';
+  starBtn.title = isInWatchlist ? 'Remove from watchlist' : 'Add to watchlist';
+}
+
+async function toggleWatchlist() {
+  starBtn.disabled = true;
+  try {
+    if (isInWatchlist) {
+      await apiRequest(`/watchlist/${currentStock._id}`, { method: 'DELETE' });
+      isInWatchlist = false;
+    } else {
+      await apiRequest('/watchlist', { method: 'POST', body: { stockId: currentStock._id } });
+      isInWatchlist = true;
+    }
+    updateStarButton();
+  } catch (error) {
+    showAlert(alertBox, error.message);
+  } finally {
+    starBtn.disabled = false;
+  }
+}
+
 /* ---------- Page start ---------- */
 
 async function init() {
@@ -210,6 +238,16 @@ async function init() {
     if (stock.priceHistory && stock.priceHistory.length > 0) {
       drawChart(stock.priceHistory);
     }
+
+        // Watchlist status check karo aur star button set karo
+    try {
+      const watchlistData = await apiRequest('/watchlist');
+      isInWatchlist = watchlistData.stocks.some((s) => String(s.stockId) === String(stock._id));
+    } catch (error) {
+      console.error('Could not load watchlist status:', error.message);
+    }
+    updateStarButton();
+    starBtn.addEventListener('click', toggleWatchlist);
 
     // Trade ke events
     quantityInput.addEventListener('input', updateEstimate);

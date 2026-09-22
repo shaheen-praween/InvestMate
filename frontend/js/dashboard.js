@@ -7,6 +7,9 @@ const viewAllHoldings = document.getElementById('viewAllHoldings');
 const ordersBody = document.getElementById('ordersBody');
 const emptyOrders = document.getElementById('emptyOrders');
 const viewAllOrders = document.getElementById('viewAllOrders');
+const watchlistBody = document.getElementById('watchlistBody');
+const emptyWatchlist = document.getElementById('emptyWatchlist');
+const viewAllWatchlist = document.getElementById('viewAllWatchlist');
 
 // Dashboard par kitni holdings aur orders dikhane hain (baaki alag pages par)
 const TOP_HOLDINGS = 5;
@@ -135,6 +138,47 @@ async function loadRecentOrders() {
   }
 }
 
+/* ---------- Watchlist summary ---------- */
+
+const TOP_WATCHLIST = 5;
+
+function renderWatchlist(stocks) {
+  watchlistBody.innerHTML = ''; // purani rows hatao
+  emptyWatchlist.hidden = stocks.length > 0;
+  viewAllWatchlist.hidden = stocks.length === 0;
+
+  // Pehli kuch hi dikhao, baaki poori list /watchlist page par
+  stocks.slice(0, TOP_WATCHLIST).forEach((stock) => {
+    const tr = document.createElement('tr');
+    tr.className = 'clickable';
+
+    // Row par click karne se us stock ka page khulega
+    tr.addEventListener('click', () => {
+      window.location.href = `/stock/${stock.stockId}`;
+    });
+
+    tr.appendChild(createCell(stock.symbol, 'symbol'));
+    tr.appendChild(createCell(stock.companyName));
+    tr.appendChild(createCell(formatPrice(stock.currentPrice), 'num'));
+
+    // Price badha to hara (+), ghata to lal (-)
+    const direction = stock.change > 0 ? 'up' : stock.change < 0 ? 'down' : '';
+    const sign = stock.change > 0 ? '+' : '';
+    tr.appendChild(createCell(`${sign}${stock.change.toFixed(2)}`, `num ${direction}`));
+
+    watchlistBody.appendChild(tr);
+  });
+}
+
+async function loadWatchlist() {
+  try {
+    const data = await apiRequest('/watchlist');
+    renderWatchlist(data.stocks);
+  } catch (error) {
+    showAlert(alertBox, error.message);
+  }
+}
+
 /* ---------- Page start ---------- */
 
 function init() {
@@ -154,6 +198,7 @@ function init() {
   // Dono kaam alag alag chalte hain: ek fail ho to doosra phir bhi dikhe
   loadPortfolio();
   loadRecentOrders();
+  loadWatchlist();
 }
 
 init();

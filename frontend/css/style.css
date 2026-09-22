@@ -522,3 +522,72 @@ body {
   width: auto;
   padding: 8px 16px;
 }
+
+/* ---------- Watchlist: search results dropdown-jaisi list ---------- */
+.search-results {
+  margin-top: 12px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.search-result-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.search-result-row:last-child {
+  border-bottom: none;
+}
+
+.search-result-info .symbol {
+  margin-right: 8px;
+}
+
+.search-result-row .btn {
+  width: auto;
+  padding: 6px 14px;
+  font-size: 13px;
+}
+
+.btn-remove {
+  background: transparent;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  width: auto;
+  padding: 6px 14px;
+  font-size: 13px;
+}
+
+.btn-remove:hover {
+  background: var(--danger);
+  color: #fff;
+}
+
+/* ---------- Watchlist star button ---------- */
+.star-btn {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  line-height: 1;
+  padding: 4px 8px;
+  color: var(--text-muted);
+}
+
+.star-btn.active {
+  color: #f59e0b;
+}
+
+.star-btn:hover {
+  color: #f59e0b;
+}
+
+.stock-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}

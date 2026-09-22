@@ -15,6 +15,7 @@
       <a href="/markets">Markets</a>
       <a href="/portfolio">Portfolio</a>
       <a href="/orders">Orders</a>
+      <a href="/watchlist">Watchlist</a>
     </div>
     <div class="nav-right">
       <span id="navUserName"></span>
@@ -113,10 +114,36 @@
       <p id="viewAllOrders" class="view-all" hidden><a href="/orders" class="back-link">View all orders &rarr;</a></p>
     </div>
 
-    <!-- Ye do cheezein baad ke phases mein aayengi -->
+      <!-- Watchlist ka chhota summary -->
+    <div class="card">
+      <h2>Watchlist</h2>
+
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Symbol</th>
+              <th>Company</th>
+              <th class="num">Price</th>
+              <th class="num">Change</th>
+            </tr>
+          </thead>
+          <tbody id="watchlistBody"></tbody>
+        </table>
+      </div>
+
+      <div id="emptyWatchlist" class="empty-state" hidden>
+        <p>Your watchlist is empty.</p>
+        <p><a href="/watchlist" class="back-link">Go to Watchlist and add stocks to track</a></p>
+      </div>
+
+      <p id="viewAllWatchlist" class="view-all" hidden><a href="/watchlist" class="back-link">View full watchlist &rarr;</a></p>
+    </div>
+
+        <!-- Ye ek cheez baad ke phase mein aayegi -->
     <div class="card">
       <h2>Coming soon</h2>
-      <p class="muted">Portfolio growth chart and watchlist summary will appear here in the next phases.</p>
+      <p class="muted">Portfolio growth chart will appear here in a later phase.</p>
     </div>
   </div>
 

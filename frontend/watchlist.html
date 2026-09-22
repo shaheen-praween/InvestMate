@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>InvestMate - Orders</title>
+  <title>InvestMate - Watchlist</title>
   <link rel="stylesheet" href="/css/style.css">
 </head>
 <body>
@@ -14,8 +14,8 @@
       <a href="/dashboard">Dashboard</a>
       <a href="/markets">Markets</a>
       <a href="/portfolio">Portfolio</a>
-      <a href="/orders" class="active">Orders</a>
-      <a href="/watchlist">Watchlist</a>
+      <a href="/orders">Orders</a>
+      <a href="/watchlist" class="active">Watchlist</a>
     </div>
     <div class="nav-right">
       <span id="navUserName"></span>
@@ -27,49 +27,43 @@
     <!-- Error message yahan dikhega -->
     <div id="alertBox" class="alert"></div>
 
+    <!-- Naya stock dhundh ke add karne ka box -->
     <div class="card">
-      <h2>Order history</h2>
-
-      <!-- Tabs: All / Buy / Sell -->
-      <div class="tabs">
-        <button class="tab active" data-type="">All</button>
-        <button class="tab" data-type="BUY">Buy</button>
-        <button class="tab" data-type="SELL">Sell</button>
+      <h2>Add a stock to your watchlist</h2>
+      <div class="toolbar">
+        <input type="text" id="searchInput" class="search-input" placeholder="Search by symbol or company name" maxlength="50" autocomplete="off">
       </div>
+      <div id="searchResults"></div>
+    </div>
+
+    <div class="card">
+      <h2>Your watchlist</h2>
 
       <div class="table-wrap">
         <table class="data-table">
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Stock</th>
-              <th>Type</th>
-              <th class="num">Qty</th>
+              <th>Symbol</th>
+              <th>Company</th>
+              <th>Sector</th>
               <th class="num">Price</th>
-              <th class="num">Total</th>
-              <th class="num">Realized P/L</th>
-              <th>Status</th>
+              <th class="num">Change</th>
+              <th class="num">Change %</th>
+              <th></th>
             </tr>
           </thead>
-          <tbody id="ordersBody"></tbody>
+          <tbody id="watchlistBody"></tbody>
         </table>
       </div>
 
       <div id="emptyState" class="empty-state" hidden>
-        <p id="emptyText">You have not placed any orders yet.</p>
-        <p><a href="/markets" class="back-link">Go to Markets</a></p>
-      </div>
-
-      <div id="pagination" class="pagination" hidden>
-        <button id="prevBtn" class="btn btn-outline">&larr; Previous</button>
-        <span id="pageInfo" class="muted"></span>
-        <button id="nextBtn" class="btn btn-outline">Next &rarr;</button>
+        <p>Your watchlist is empty. Search above to add stocks you want to track.</p>
       </div>
     </div>
   </div>
 
   <!-- Pehle api.js (helpers), phir is page ki apni JS -->
   <script src="/js/api.js"></script>
-  <script src="/js/orders.js"></script>
+  <script src="/js/watchlist.js"></script>
 </body>
 </html>
